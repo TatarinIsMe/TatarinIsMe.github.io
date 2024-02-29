@@ -15,7 +15,7 @@ const Chat = () => {
               $.ajax({
         // url: 'http://localhost:8888/basic/web/index.php?r=post%2Findex',
     //    url: 'http://localhost:8888/basic/web/post/ajax',
-        url: 'http://tatarin.site/web/post/ajax',
+        url: 'http://tatarin.site/back/web/post/ajax',
         type: 'post',
         dataType: 'json',
         data: {param1: textMes},
@@ -137,10 +137,14 @@ const Chat = () => {
                     value={message}
                     onChange={handleChange} />
             </div>
+            <div className={styles.button}>
+            {/* <input type="submit" onSubmit={handleSubmit} value="Отправить" /> */}
+            <button onClick={OutPut} className={styles.buttonTwo}>Отправить</button>
+        </div>
         </form>
         <div className={styles.button}>
-            {/* <input type="submit" onSubmit={handleSubmit} value="False" /> */}
-            <button onClick={OutPut} className={styles.buttonTwo}>Click</button>
+            {/* <input type="submit" onSubmit={handleSubmit} value="ОТправить" /> */}
+            <button onClick={OutPut} className={styles.buttonTwo}>Отправить</button>
         </div>
     </div>
 </div>

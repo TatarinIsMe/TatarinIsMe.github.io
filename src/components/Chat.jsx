@@ -5,13 +5,15 @@ import $ from "jquery";
 
 import styles from "../styles/Chat.module.css";
 import Messages from "./Messages";
-
+var textMessage = '';
 const Chat = () => {
-  
     function sendText(textMes){
-        const data = {
-            name: 'textMes',
-          };
+        // const data = {
+        //     name: 'textMes',
+        //   };
+        if (textMes == 'start'){
+            textMes = null;
+        }
               $.ajax({
         // url: 'http://localhost:8888/basic/web/index.php?r=post%2Findex',
     //    url: 'http://localhost:8888/basic/web/post/ajax',
@@ -24,11 +26,15 @@ const Chat = () => {
         },
         error: function(er){
             console.log(er.responseText);
+            textMessage = er.responseText;
             setState((_state) => [..._state, {user: "admin", message: er.responseText}])
         }
 });
+   
 
-    //     fetch('http://localhost:8888/basic/web/post/ajax', {
+
+
+    //     fetch('http://tatarin.site/back/web/post/ajax', {
     //     method: 'POST',
     //     headers: {
     //       'Content-Type': 'application/json'
@@ -88,9 +94,11 @@ const Chat = () => {
     //       }
     //   });
       }
-    const [state, setState] = useState([{user: "sal", message: "Добрый день,(имя пользователя). Вас приветствует виртуальный помомошник школы Гармония. Рад вас видеть. Чем я могу помочь? Выбирете нужную категорию"}]);
+      
+    const [state, setState] = useState([{user: "admin", message: "Добрый день,(имя пользователя). Вас приветствует виртуальный помомошник школы Гармония. Рад вас видеть. Чем я могу помочь? Выбирете нужную категорию"}
+]);
     const [message, setMessage] = useState("");
-
+    
     const handleChange = ({target: {value}}) => {
         setMessage(value);
       
@@ -118,6 +126,30 @@ const Chat = () => {
         sendText(message);
 
     }
+    const startAction = (e) =>{
+        e.preventDefault();
+      
+        // if (!message) {
+        //     return;};
+        setState((_state) => [..._state, {user: "user", message: "start" }])
+        sendText("start");
+    }
+    const yesAction = (e) =>{
+        e.preventDefault();
+      
+        // if (!message) {
+        //     return;};
+        setState((_state) => [..._state, {user: "user", message: "Да" }])
+        sendText("Да");
+    }
+    const noAction = (e) =>{
+        e.preventDefault();
+      
+        // if (!message) {
+        //     return;};
+        setState((_state) => [..._state, {user: "user", message: "Нет" }])
+        sendText("Нет");
+    }
       
 
 
@@ -144,7 +176,9 @@ const Chat = () => {
         </form>
         <div className={styles.button}>
             {/* <input type="submit" onSubmit={handleSubmit} value="ОТправить" /> */}
-            <button onClick={OutPut} className={styles.buttonTwo}>Отправить</button>
+            <button onClick={startAction} className={styles.buttonStart}>start</button>
+            <button onClick={yesAction} className={styles.buttonStart}>Да</button>
+            <button onClick={noAction} className={styles.buttonStart}>Нет</button>
         </div>
     </div>
 </div>

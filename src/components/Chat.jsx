@@ -7,6 +7,8 @@ import styles from "../styles/Chat.module.css";
 import Messages from "./Messages";
 var textMessage = '';
 const Chat = () => {
+    const [stateButton, setButton] = useState(true);
+
     function sendText(textMes){
         // const data = {
         //     name: 'textMes',
@@ -17,17 +19,30 @@ const Chat = () => {
               $.ajax({
         // url: 'http://localhost:8888/basic/web/index.php?r=post%2Findex',
     //    url: 'http://localhost:8888/basic/web/post/ajax',
+        
         url: 'http://tatarin.site/back/web/post/ajax',
         type: 'post',
         dataType: 'json',
         data: {param1: textMes},
         success: function(res){
-            console.log('hi');
+            console.log(res.text);
+            console.log(res.type);
+            setState((_state) => [..._state, {user: "admin", message: res.text}])
+            if (res.type == "Конец"){
+                console.log('End');
+                // setState((_state) => [..._state, {user: "admin", message: res.text}])
+                sendText('123');
+            } else if (res.type == 'Strict'){
+                setButton(false);
+            } else if (res.type == 'YesNo'){
+                setButton(true);
+            }
         },
         error: function(er){
+            console.log('error');
             console.log(er.responseText);
-            textMessage = er.responseText;
-            setState((_state) => [..._state, {user: "admin", message: er.responseText}])
+            // textMessage = er.responseText;
+            // setState((_state) => [..._state, {user: "admin", message: er.responseText}])
         }
 });
    
@@ -124,7 +139,7 @@ const Chat = () => {
             return;};
         setState((_state) => [..._state, {user: "user", message: message }])
         sendText(message);
-
+        setMessage("");
     }
     const startAction = (e) =>{
         e.preventDefault();
@@ -177,8 +192,8 @@ const Chat = () => {
         <div className={styles.button}>
             {/* <input type="submit" onSubmit={handleSubmit} value="ОТправить" /> */}
             <button onClick={startAction} className={styles.buttonStart}>start</button>
-            <button onClick={yesAction} className={styles.buttonStart}>Да</button>
-            <button onClick={noAction} className={styles.buttonStart}>Нет</button>
+            <button disabled={!stateButton} onClick={yesAction} className={styles.buttonStart}>Да</button>
+            <button disabled={!stateButton} onClick={noAction} className={styles.buttonStart}>Нет</button>
         </div>
     </div>
 </div>
